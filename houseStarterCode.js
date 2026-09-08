@@ -143,7 +143,13 @@ var points = [
     vec4(-0.35, -0.30, -0.1, 1.0),
     vec4( 0.35, -0.30, -0.1, 1.0),
     vec4( 0.35,  0.30, -0.1, 1.0),
-    vec4(-0.35,  0.30, -0.1, 1.0)
+    vec4(-0.35,  0.30, -0.1, 1.0),
+
+    // DOOR
+    vec4(-0.40, 0.0, -0.1, 1.0),
+    vec4( 0.40, 0.0, -0.1, 1.0),
+    vec4( 0.40, 1.20, -0.1, 1.0),
+    vec4(-0.40, 1.20, -0.1, 1.0)
 
 
 ];
@@ -164,7 +170,13 @@ var colors = [
     vec4(1.0, 1.0, 0.0, 1.0),
     vec4(1.0, 1.0, 0.0, 1.0),
     vec4(1.0, 1.0, 0.0, 1.0),
-    vec4(1.0, 1.0, 0.0, 1.0)
+    vec4(1.0, 1.0, 0.0, 1.0),
+
+    // DOOR
+    vec4(0.4, 0.2, 0.1, 1.0),
+    vec4(0.4, 0.2, 0.1, 1.0),
+    vec4(0.4, 0.2, 0.1, 1.0),
+    vec4(0.4, 0.2, 0.1, 1.0)
 
 ];
 
@@ -341,7 +353,28 @@ function drawWindows(){
 }
 
 function drawEntrance(){
-    gl.drawArrays(gl.TRIANGLE_FAN, 15, 4);
+    var T = translate(
+        0.0,
+        ty,
+        0.0
+    );
+
+    var entranceMatrix = mult(
+        modelViewMatrix,
+        T
+    );
+
+    gl.uniformMatrix4fv(
+        modelViewMatrixLoc,
+        false,
+        flatten(entranceMatrix)
+    );
+
+    gl.drawArrays(
+        gl.TRIANGLE_FAN,
+        11,
+        4
+    );
 }
 
 function drawDiamond(){
@@ -353,8 +386,28 @@ function render()
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     modelViewMatrix = lookAt(eye, at, up);
     gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(modelViewMatrix) );
+
+    //DOOR ANIMATION
+    if (down == true) {
+
+    ty = ty - 0.01;
+
+    if (ty <= -1.1) {
+        down = false;
+    }
+}
+
+if (down == false) {
+
+    ty = ty + 0.01;
+
+    if (ty >= 0.0) {
+        down = true;
+    }
+}
     drawHouse();
     drawWindows();
+    drawEntrance();
 
     window.requestAnimationFrame(render);
 }
