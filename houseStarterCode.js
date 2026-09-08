@@ -35,7 +35,13 @@ var points = [
     vec4(-0.40, 0.0, -0.1, 1.0),
     vec4( 0.40, 0.0, -0.1, 1.0),
     vec4( 0.40, 1.20, -0.1, 1.0),
-    vec4(-0.40, 1.20, -0.1, 1.0)
+    vec4(-0.40, 1.20, -0.1, 1.0),
+
+    // DIAMOND
+    vec4( 0.0, 3.20, -0.2, 1.0),
+    vec4( 0.30, 2.90, -0.2, 1.0),
+    vec4( 0.0, 2.60, -0.2, 1.0),
+    vec4(-0.30, 2.90, -0.2, 1.0)
 
 
 ];
@@ -62,7 +68,13 @@ var colors = [
     vec4(0.4, 0.2, 0.1, 1.0),
     vec4(0.4, 0.2, 0.1, 1.0),
     vec4(0.4, 0.2, 0.1, 1.0),
-    vec4(0.4, 0.2, 0.1, 1.0)
+    vec4(0.4, 0.2, 0.1, 1.0),
+
+    // DIAMOND
+    vec4(0.0, 1.0, 0.0, 1.0),
+    vec4(0.0, 1.0, 0.0, 1.0),
+    vec4(0.0, 1.0, 0.0, 1.0),
+    vec4(0.0, 1.0, 0.0, 1.0)
 
 ];
 
@@ -269,7 +281,36 @@ function drawEntrance(){
 }
 
 function drawDiamond(){
-    gl.drawArrays(gl.TRIANGLE_FAN, 19, 4);
+     var T1 = translate(
+        0.0,
+        -2.9,
+        0.0
+    );
+
+    var R = rotateZ(theta);
+
+    var T2 = translate(
+        0.0,
+        2.9,
+        0.0
+    );
+
+    var diamondMatrix = mult(
+        modelViewMatrix,
+        mult(T2, mult(R, T1))
+    );
+
+    gl.uniformMatrix4fv(
+        modelViewMatrixLoc,
+        false,
+        flatten(diamondMatrix)
+    );
+
+    gl.drawArrays(
+        gl.TRIANGLE_FAN,
+        15,
+        4
+    );
 }
 
 function render()
@@ -296,9 +337,14 @@ if (down == false) {
         down = true;
     }
 }
+
+    //DIAMOND ROTATION
+    theta = theta + 1.0;
+
+
     drawHouse();
     drawWindows();
     drawEntrance();
-
+    drawDiamond();
     window.requestAnimationFrame(render);
 }
