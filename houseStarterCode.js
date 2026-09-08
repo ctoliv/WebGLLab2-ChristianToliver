@@ -1,3 +1,9 @@
+"use strict";
+
+var canvas;
+var gl;
+
+
 
 
 "use strict";
@@ -127,6 +133,11 @@ window.onload = function init()
 
 
     render();
+}
+
+function drawHouse(){
+    gl.drawArrays(gl.TRIANGLE_FAN, 0, 4);
+    gl.drawArrays(gl.TRIANGLES, 4, 3);
 }
 
 function drawWindows(){
