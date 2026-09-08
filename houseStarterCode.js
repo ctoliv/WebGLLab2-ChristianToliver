@@ -6,10 +6,31 @@ var gl;
 
 
 var points = [
+     // HOUSE BODY
+    vec4(-2.0, 0.0, 0.0, 1.0),
+    vec4( 2.0, 0.0, 0.0, 1.0),
+    vec4( 2.0, 2.4, 0.0, 1.0),
+    vec4(-2.0, 2.4, 0.0, 1.0),
+
+    // ROOF
+    vec4(-2.0, 2.4, 0.0, 1.0),
+    vec4( 0.0, 3.6, 0.0, 1.0),
+    vec4( 2.0, 2.4, 0.0, 1.0)
+
 
 ];
 
 var colors = [
+// HOUSE BODY
+    vec4(0.2, 0.6, 0.8, 1.0),
+    vec4(0.2, 0.6, 0.8, 1.0),
+    vec4(0.2, 0.6, 0.8, 1.0),
+    vec4(0.2, 0.6, 0.8, 1.0),
+
+    // ROOF
+    vec4(0.8, 0.2, 0.2, 1.0),
+    vec4(0.8, 0.2, 0.2, 1.0),
+    vec4(0.8, 0.2, 0.2, 1.0)
 
 ];
 
@@ -106,9 +127,7 @@ function render()
     modelViewMatrix = lookAt(eye, at, up);
     gl.uniformMatrix4fv( modelViewMatrixLoc, false, flatten(modelViewMatrix) );
     drawHouse();
-    drawWindows();
-    drawEntrance();
-    drawDiamond();
+   
 
     window.requestAnimationFrame(render);
 }
